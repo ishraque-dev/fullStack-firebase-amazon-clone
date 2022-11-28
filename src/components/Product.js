@@ -17,6 +17,7 @@ const Product = () => {
         src="https://images-na.ssl-images-amazon.com/images/I/51Zymoq7UnL._SX325_BO1,204,203,200_.jpg"
         alt=""
       />
+      <button>Add to Cart</button>
     </div>
   );
 };
