@@ -1,8 +1,39 @@
-import React from 'react';
+import { React, useContext, useState } from 'react';
 import '../style/header.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import Context from '../store/Context';
 const Header = () => {
+  const [focus, setFocus] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const { data, setSearchItem } = useContext(Context);
+  const search_items = data.map((item) => item.category);
+  const onFocus = () => {
+    setFocus(true);
+  };
+  const onBlur = () => {
+    setTimeout(() => {
+      setFocus(false);
+    }, 500);
+    return clearTimeout(setTimeout);
+  };
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+    setNotFound(false);
+  };
+  const handleClick = () => {
+    console.log(inputValue);
+
+    search_items.forEach((item) => {
+      if (item !== inputValue) {
+        setNotFound(true);
+        setFocus(true);
+      } else {
+        setSearchItem(inputValue);
+      }
+    });
+  };
   return (
     <div className="header">
       <img
@@ -11,8 +42,46 @@ const Header = () => {
         alt="logo"
       />
       <div className="header__search">
-        <input type="text" className="header__searchInput" />
-        <SearchIcon className="header__searchIcon" />
+        <input
+          type="text"
+          className="header__searchInput"
+          onFocus={onFocus}
+          onBlur={onBlur}
+          value={inputValue}
+          placeholder={focus && 'You can search for...'}
+          onChange={handleChange}
+        />
+
+        {focus && (
+          <div className="search__dropdown">
+            {!notFound && (
+              <ul>
+                {search_items
+                  .filter((item, i) => search_items.indexOf(item) === i)
+                  .map((item, i) => {
+                    return (
+                      <li
+                        key={i}
+                        onClick={() => {
+                          setInputValue(item);
+                          setSearchItem(item);
+                        }}
+                      >
+                        {item}
+                      </li>
+                    );
+                  })}
+              </ul>
+            )}
+            {notFound && (
+              <h1>
+                Nothing found! You can only search for items those are present
+                in suggestion.
+              </h1>
+            )}
+          </div>
+        )}
+        <SearchIcon className="header__searchIcon" onClick={handleClick} />
       </div>
       <div className="header__nav">
         <div className="header__option">

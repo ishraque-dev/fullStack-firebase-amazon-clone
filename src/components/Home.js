@@ -1,17 +1,21 @@
-import { React, useState, useEffect } from 'react';
+import { React, useContext, useState, useEffect } from 'react';
 import '../style/home.css';
 import Product from './Product';
+import Context from '../store/Context';
 const Home = () => {
+  const { setData: set_Data, searchItem } = useContext(Context);
+
   const [data, setData] = useState();
   const getData = async function () {
     const res = await fetch('https://fakestoreapi.com/products');
     const data = await res.json();
     setData(data);
+    set_Data(data);
   };
   useEffect(() => {
     getData();
   }, []);
-  console.log(data);
+
   const slicer = (data, value) => {
     return data?.slice(0, value);
   };
@@ -24,7 +28,7 @@ const Home = () => {
       return filData;
     }
   };
-  console.log(categoryFilter(data, 'electronics', 3));
+
   return (
     <div className="home">
       <img
@@ -35,7 +39,7 @@ const Home = () => {
       <div className="home__container">
         <div className="home__row">
           {/* 2 */}
-          {slicer(data, 2)?.map((item, index) => {
+          {categoryFilter(data, searchItem || 'jewelery', 2)?.map((item) => {
             return (
               <Product
                 title={item.title}
@@ -48,7 +52,7 @@ const Home = () => {
           })}
         </div>
         <div className="home__row">
-          {categoryFilter(data, 'electronics', 3).map((item) => {
+          {categoryFilter(data, searchItem || 'electronics', 3)?.map((item) => {
             return (
               <Product
                 title={item.title}
