@@ -9,7 +9,7 @@ const Product = ({ title, image, price, rating }) => {
           <small>$</small>
           <strong>{price}</strong>
           <div className="product__rating">
-            {Array(rating)
+            {Array(4)
               .fill()
               .map((_, i) => (
                 <p>⭐</p>
