@@ -1,6 +1,8 @@
-import React from 'react';
+import { React, useContext } from 'react';
 import '../style/product.css';
-const Product = ({ title, image, price, rating }) => {
+import Context from '../store/Context';
+const Product = ({ title, image, price, id }) => {
+  const { addToCart } = useContext(Context);
   return (
     <div className="product">
       <div className="product__info">
@@ -18,7 +20,14 @@ const Product = ({ title, image, price, rating }) => {
         </div>
       </div>
       <img src={image} alt="" />
-      <button>Add to Cart</button>
+      <button
+        type="button"
+        onClick={() => {
+          addToCart({ title, image, price, id });
+        }}
+      >
+        Add to Cart
+      </button>
     </div>
   );
 };

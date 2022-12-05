@@ -15,7 +15,7 @@
 }
 .home__row {
   display: flex;
-  z-index: -1;
+  /* z-index: -1; */
   margin: 0 5px;
   flex-direction: row;
   align-items: center;
